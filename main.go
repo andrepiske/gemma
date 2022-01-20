@@ -29,12 +29,12 @@ func (r *Reader) ReadValue() RValue {
 
 		fmt.Printf("array has %d elements\n", arrayLen)
 
-    result := make([]RValue, 0)
+    result := make([]RValue, arrayLen)
 
     for i := 0; i < arrayLen; i++ {
       // read element of array
       v := r.ReadValue()
-      result = append(result, v)
+      result[i] = v
     }
 
     return result
