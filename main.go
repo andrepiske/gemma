@@ -12,7 +12,7 @@ type Reader struct {
 	src *bufio.Reader
 }
 
-type RValue interface {}
+type RValue interface{}
 
 func NewReader(s io.Reader) *Reader {
 	return &Reader{src: bufio.NewReader(s)}
@@ -25,28 +25,28 @@ func (r *Reader) ReadValue() RValue {
 		fmt.Println("will read an Array")
 		s, _ := r.src.ReadString('\n')
 
-		arrayLen, _ := strconv.Atoi(s[1:len(s)-2])
+		arrayLen, _ := strconv.Atoi(s[1 : len(s)-2])
 
 		fmt.Printf("array has %d elements\n", arrayLen)
 
-    result := make([]RValue, arrayLen)
+		result := make([]RValue, arrayLen)
 
-    for i := 0; i < arrayLen; i++ {
-      // read element of array
-      v := r.ReadValue()
-      result[i] = v
-    }
+		for i := 0; i < arrayLen; i++ {
+			// read element of array
+			v := r.ReadValue()
+			result[i] = v
+		}
 
-    return result
+		return result
 
 	} else if p[0] == '+' {
 		fmt.Println("will read a Simple String")
 
 		s, _ := r.src.ReadString('\n')
-    v := s[:len(s)-1]
-    fmt.Printf("Read simple string '%s'\n", v)
+		v := s[:len(s)-1]
+		fmt.Printf("Read simple string '%s'\n", v)
 
-    return v
+		return v
 
 	} else if p[0] == '-' {
 		fmt.Println("will read an Error")
@@ -59,20 +59,20 @@ func (r *Reader) ReadValue() RValue {
 	} else if p[0] == '$' {
 		fmt.Println("will read a complex String")
 		s, _ := r.src.ReadString('\n')
-		strLen, _ := strconv.Atoi(s[1:len(s)-2])
-    buf := make([]byte, strLen)
-    r.src.Read(buf)
-    r.src.ReadByte() // \r
-    r.src.ReadByte() // \n
-    v := string(buf)
+		strLen, _ := strconv.Atoi(s[1 : len(s)-2])
+		buf := make([]byte, strLen)
+		r.src.Read(buf)
+		r.src.ReadByte() // \r
+		r.src.ReadByte() // \n
+		v := string(buf)
 		fmt.Printf("string has length %d and it is '%s'\n", strLen, v)
-    return v
+		return v
 	} else {
 		fmt.Printf("wuuuut is '%v'?\n", p)
 		panic(p)
 	}
 
-  return nil
+	return nil
 }
 
 func handleClient(conn net.Conn) {
